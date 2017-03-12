@@ -14,10 +14,16 @@ echo say();
 //         return null;
 //     }
 
-    var_dump(default_value("int"));
-    var_dump(default_value("int", 1));
-    var_dump(default_value("bool"));
-    var_dump(default_value("bool", true));
-    var_dump(default_value("str"));
-    var_dump(default_value("str", "a"));
-    var_dump(default_value("array"));
+    // var_dump(default_value("int"));
+    // var_dump(default_value("int", 1));
+    // var_dump(default_value("bool"));
+    // var_dump(default_value("bool", true));
+    // var_dump(default_value("str"));
+    // var_dump(default_value("str", "a"));
+    // var_dump(default_value("array"));
+
+    $say = new say;
+    var_dump($say->memory);
+    $say->learn("love");
+    var_dump($say->memory);
+    var_dump($say->hello());

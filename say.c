@@ -86,6 +86,49 @@ PHP_FUNCTION(default_value)
     RETURN_NULL();
 }
 
+/**
+ * Create a php class here
+ *
+ * @link http://www.bo56.com/%E7%99%BD%E8%AF%9Dphp7%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E4%B9%8B%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/
+ * @author neychang
+ */
+ zend_class_entry *say_ce;
+ PHP_METHOD(say, learn);
+ PHP_METHOD(say, hello);
+
+ ZEND_BEGIN_ARG_INFO_EX(arginfo_say_learn, 0, 0, 1)
+     ZEND_ARG_INFO(0, love)
+ ZEND_END_ARG_INFO()
+
+ const zend_function_entry say_methods[] = {
+ 	PHP_ME(say, learn, arginfo_say_learn, ZEND_ACC_PUBLIC)
+	PHP_ME(say, hello, NULL, ZEND_ACC_PUBLIC)
+ 	{NULL, NULL, NULL}	/* Must be the last line in children_functions[] */
+ };
+
+ PHP_METHOD(say, learn)
+ {
+ 	char *love = NULL;
+ 	size_t love_len;
+
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &love, &love_len) == FAILURE) {
+ 		return;
+ 	}
+
+ 	zend_update_property_string(say_ce,  getThis(), "memory", sizeof("memory") - 1, love);
+ }
+
+// add a method to say class
+// PHP_METHOD(say, hello);
+// learn from http://blog.csdn.net/denieljean/article/details/8160485
+
+PHP_METHOD(say, hello)
+{
+	zend_string *strg;
+  strg = strpprintf(0, "say hello");
+  RETURN_STR(strg);
+}
+
 /* Remove the following function when you have successfully modified config.m4
    so that your module can be compiled into PHP, it exists only for testing
    purposes. */
@@ -133,6 +176,12 @@ PHP_MINIT_FUNCTION(say)
 	/* If you have INI entries, uncomment these lines
 	REGISTER_INI_ENTRIES();
 	*/
+	zend_class_entry ce;
+	INIT_CLASS_ENTRY(ce, "say", say_methods);
+
+	say_ce = zend_register_internal_class(&ce);
+
+	zend_declare_property_null(say_ce, "memory",sizeof("memory") - 1, ZEND_ACC_PUBLIC);
 	return SUCCESS;
 }
 /* }}} */
